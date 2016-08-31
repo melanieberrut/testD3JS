@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<title>D3 Example</title>
+	</head>
+	<body>
+
+		<h1>Welcome</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta architecto cumque minus, doloribus libero id cum vero ratione. Fugiat adipisci asperiores quas nulla. Facere, quis, libero! Harum soluta, qui molestiae?</p>
+		
+		<ul id="items">
+			<li class="item">Tennis</li>
+			<li class="item">Running</li>
+			<li class="item">Cycling</li>
+			<li class="item">Weights</li>
+			<li class="item">Sleeping</li>
+		</ul>
+
+		<script src="js/d3.js"></script>
+		<script>
+			(function(){
+				"use strict";
+
+				var styles = [
+					{
+						'background': 'red',
+						'color': 'white',
+						'width': 25
+					},
+					{
+						'background': 'blue',
+						'color': 'white',
+						'width': 15
+					},
+					{
+						'background': 'yellow',
+						'color': 'black',
+						'width': 10
+					},
+					{
+						'background': 'green',
+						'color': 'white',
+						'width': 5
+					},
+					{
+						'background': 'gray',
+						'color': 'white',
+						'width': 45
+					},
+				];
+
+				d3.selectAll(".item")
+					.data(styles)
+					.style("background", function(d){
+						return d.background;
+					})
+					.style("color", function(d){
+						return d.color;
+					})
+					.style("width", function(d){
+						return d.width + "%";
+					})
+					.style("padding", "15px")
+					.style("list-style", "none")
+
+			})();
+		</script>
+	</body>
+</html>

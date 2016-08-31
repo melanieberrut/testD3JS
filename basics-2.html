@@ -1,0 +1,53 @@
+<html>
+	<head>D3 Example</head>
+	<body>
+
+		<h1>Welcome</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta architecto cumque minus, doloribus libero id cum vero ratione. Fugiat adipisci asperiores quas nulla. Facere, quis, libero! Harum soluta, qui molestiae?</p>
+		
+		<ul id="items">
+			<li class="item">This is an item</li>
+			<li class="item">This is an item</li>
+			<li class="item">This is an item</li>
+			<li class="item">This is an item</li>
+			<li class="item">This is an item</li>
+		</ul>
+
+		<script src="js/d3.js"></script>
+		<script>
+			(function(){
+				"use strict";
+
+				var numbers = [1,2,3,4,5,6];
+
+				// // Replacing the list by the array data
+
+				// d3.selectAll(".item")
+				// 	.data(numbers)
+				// 	.text(function(dataParameter){
+				// 		return "I am data number: " + dataParameter;
+				// 	});
+
+
+				// For each list should equal the value in array
+
+				// d3.selectAll(".item")
+				// 	.data(numbers)
+				// 	.style("font-size", function(dataParameter){
+				// 		return "1"+ dataParameter + "px";
+				// 	});
+
+
+				// What if there is more array than DOM elements
+				// 5 list items, and 6 results in object
+
+				// d3.select("body").selectAll("li")
+				// 	.data(numbers)
+				// 	.enter().append("li")
+				// 	.text(function(dataParameter){
+				// 		return "I am data number: " + dataParameter;
+				// 	});
+			})();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>D3 Sandbox</title>
+	</head>
+	<body>
+
+		<div id="chart"></div>
+		
+		<script src="js/d3.js"></script>
+		<script>
+			(function(){
+				"use string";
+
+				var chartData = [20, 300, 230, 500, 440, 120, 310, 30, 600];
+
+				// width of chart
+				var width = 400;
+				// height of chart
+				var height = 500;
+				// width of the bar
+				var barWidth = 40;
+				var barOffset = 5;
+
+				// Defining Linear Scale
+				var y = d3.scaleLinear()
+							.domain([0, d3.max(chartData)])
+							.range([0, height]);
+
+				// Defining ordinal Scale
+				//  This was following tutorial but it's not working
+				// var x = d3.scaleOrdinal()
+				// 			.domain(d3.range(0, chartData.length))
+				// 			.range([0, width]);
+				// // 
+
+				// Defining X
+				var x = d3.scaleBand()
+							.domain(d3.range(0, chartData.length))
+							.range([0, width]);
+
+				var chart = d3.select("#chart")
+								.append("svg")
+									.attr("width", width)
+									.attr("height", height)
+									.style("background", "#f9f9f9")
+									.selectAll("rect")
+									.data(chartData)
+									.enter().append("rect")
+										.style("fill", "steelblue")
+										.attr("width", x.bandwidth())
+										.attr("height", function(d){
+											return y(d); // setting scale
+										})
+										.attr("x", function(d, i){
+											return x(i);
+										})
+										.attr("y", function(d, i){
+											return height - y(d); // setting scale
+										});
+
+			})();
+
+		</script>
+
+	</body>
+</html>

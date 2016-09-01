@@ -1,0 +1,107 @@
+<html>
+	<head>
+		<title>D3 Sandbox</title>
+	</head>
+	<body>
+
+		<div id="chart"></div>
+		
+		<script src="js/d3.js"></script>
+		<script>
+			(function(){
+				"use string";
+				// ****************
+				// ADDING EVENTS
+				// ****************
+
+
+				// Create random data for the array
+				var chartData = [];
+				var dataCount = 40;
+				var dataMax = 500;
+				for (var i = 0; i < dataCount; i++) {
+					chartData.push(Math.round(Math.random() *  dataMax));
+				}
+
+				// Chart dimensions
+				var width = 400; // width of chart
+				var height = 500; // height of chart
+
+				// Set tooltip
+				var tooltip = d3.select("body").append("div")
+									.style("background","#cccccc")
+									.style("position","absolute")
+									.style("opacity",0)
+									.style("padding","5 15px")
+									.style("border","1px solid black")
+									.style("border-radius","4px");
+
+				// width of the bar
+				var barWidth = 40;
+				var barOffset = 5;
+				
+				// Defining Linear Scale
+				var y = d3.scaleLinear()
+							.domain([0, d3.max(chartData)])
+							.range([0, height]);
+
+				// Defining X
+				var x = d3.scaleBand()
+							.domain(d3.range(0, chartData.length))
+							.range([0, width]);
+				
+				// Set color scale
+				var colors = d3.scaleLinear()
+							.domain([0, d3.max(chartData)])
+							.range(['#cccccc', '#000000']);
+
+				var chart = d3.select("#chart")
+								.append("svg")
+									.attr("width", width)
+									.attr("height", height)
+									.style("background", "#f9f9f9")
+									.selectAll("rect")
+									.data(chartData)
+									.enter().append("rect")
+										.style("fill", function(d, i){
+											return colors(i);
+										})
+										.attr("width", x.bandwidth())
+										.attr("height", function(d){
+											return y(d); // setting scale
+										})
+										.attr("x", function(d, i){
+											return x(i);
+										})
+										.attr("y", function(d, i){
+											return height - y(d); // setting scale
+										});
+
+
+				//  Adding color on mouseover and mouseout
+				var barColor;
+				chart.on("mouseover", function(d){
+					tooltip
+						.style("opacity", 1)
+						.style("display","block")
+						.style("left", (d3.event.pageX)+"px")
+						.style("top", (d3.event.pageY)+"px");
+					tooltip.html(d);
+					barColor = this.style.fill;
+					d3.select(this)
+						.style("opacity", 0.8)
+						.style("fill", "#000000")
+				}).on("mouseout", function(){
+					// var barColor = this.style.fill;
+					tooltip.style("display","none");
+					d3.select(this)
+						.style("opacity", 1)
+						.style("fill", barColor)
+				});
+
+			})();
+
+		</script>
+
+	</body>
+</html>

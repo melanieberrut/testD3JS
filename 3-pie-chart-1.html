@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<title>Pie Chart</title>
+	</head>
+	<body>
+		
+		<h3>My pie chart title</h3>
+		<div id="chart"></div>
+		
+		<script src="js/d3.js"></script>
+		<script>
+			(function(){
+				"use string";
+
+				var w = 400,
+					h = 400,
+					r = 200, 
+					pieData,
+					pie,
+					arc,
+					slices,
+					text;
+				var colors =  d3.scaleOrdinal(d3.schemeCategory10);
+
+				pieData = [
+					{
+						console: 'PS4',
+						purchases: 3500
+					},
+					{
+						console: 'XBox One',
+						purchases: 2100
+					},
+					{
+						console: 'PS3',
+						purchases: 1800
+					},
+					{
+						console: 'XBox 360',
+						purchases: 1900
+					},
+					{
+						console: 'Wii',
+						purchases: 1300
+					},
+				];
+
+				pie =  d3.pie()
+							.value(function(d){
+								return d.purchases
+							});
+
+				arc = d3.arc()
+					.innerRadius(0)
+					.outerRadius(r)
+
+				c = d3.select("#chart").append("svg")
+							.attr("width", w)
+							.attr("height", h)
+							.append("g")
+								.attr("transform", "translate("+(w - r)+","+(h - r)+")")
+								.selectAll("path")
+								.data(pie(pieData))
+								.enter()
+								.append("g")
+									.attr("class","slice");
+
+				slices = d3.selectAll("g.slice")
+							.append("path")
+							.attr("fill", function(d, i){
+								return colors(i);
+							})
+							.attr("d", arc);
+
+
+				text = d3.selectAll("g.slice")
+					.append("text")
+					.text(function(d, i){
+						return d.data.console
+					})
+					.attr("text-anchor", "middle")
+					.attr("fill", "#ffffff")
+					.attr("transform", function(d){
+						return "translate("+arc.centroid(d)+")";
+					})
+
+
+			})();
+
+		</script>
+
+	</body>
+</html>

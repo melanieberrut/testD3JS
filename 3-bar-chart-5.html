@@ -1,0 +1,138 @@
+<html>
+	<head>
+		<title>D3 Sandbox</title>
+	</head>
+	<body>
+
+		<div id="chart"></div>
+		
+		<script src="js/d3.js"></script>
+		<script>
+			(function(){
+				"use string";
+
+				// Create random data for the array
+				var chartData = [];
+				var dataCount = 9;
+				var dataMax = 400;
+				for (var i = 0; i < dataCount; i++) {
+					chartData.push(Math.round(Math.random() *  dataMax));
+				}
+
+				var margin = {
+					top: 30,
+					right: 30,
+					bottom: 40,
+					left: 50
+				}
+
+				// Chart dimensions
+				var width = 400 - margin.left - margin.right; // width of chart
+				var height = 400 - margin.top - margin.bottom; // height of chart
+
+				// Set tooltip
+				var tooltip = d3.select("body").append("div")
+									.style("background","#cccccc")
+									.style("position","absolute")
+									.style("opacity",0)
+									.style("padding","5 15px")
+									.style("border","1px solid black")
+									.style("border-radius","4px");
+
+				// width of the bar
+				var barWidth = 40;
+				var barOffset = 5;
+				
+				// Defining Linear Scale
+				var y = d3.scaleLinear()
+							.domain([0, d3.max(chartData)])
+							.range([0, height]);
+
+				// Defining X
+				var x = d3.scaleBand()
+							.domain(d3.range(0, chartData.length))
+							.range([0, width]);
+				
+				// Set color scale
+				var colors = d3.scaleLinear()
+							.domain([0, d3.max(chartData)])
+							.range(['#cccccc', '#000000']);
+
+				var chart = d3.select("#chart")
+								.append("svg")
+									.attr("width", width + margin.right + margin.left)
+									.attr("height", height + margin.top + margin.bottom)
+									.append("g")
+									.attr("transform", "translate("+margin.left+","+margin.top+")")
+									.style("background", "#f9f9f9")
+									.selectAll("rect")
+									.data(chartData)
+									.enter().append("rect")
+										.style("fill", function(d, i){
+											return colors(i);
+										})
+										.attr("width", x.bandwidth())
+										.attr("height", function(d){
+											return y(d); // setting scale
+										})
+										.attr("x", function(d, i){
+											return x(i);
+										})
+										.attr("y", function(d, i){
+											return height - y(d); // setting scale
+										});
+
+
+				// Set Vertical Scale
+				var v = d3.scaleLinear()
+							.domain([0, d3.max(chartData)])
+							.range([height, 0]);
+
+				// Set Horizontal Scale
+				var h = d3.scaleBand()
+							.domain(d3.range(0, chartData.length))
+							.range([0, width], .2);
+
+				// Set vertical axis
+				var vAxis = d3.axisLeft()
+								.scale(v)
+								.ticks(5)
+								.tickPadding(5)
+								.tickSize(5);
+
+				// Set vertical guide				
+				var vGuide = d3.select("svg")
+								.append("g")
+									vAxis(vGuide)
+									vGuide.attr("transform", "translate("+margin.left+","+margin.top+")")
+									vGuide.selectAll("path")
+										.style("fill", "none")
+										.style("stroke", "#000000")
+									vGuide.selectAll("line")
+										.style("stroke", "#000000")
+
+
+				// Set Horizontal axis
+				var hAxis = d3.axisBottom()
+								.scale(h)
+								.tickValues(h.domain().filter(function(d, i){
+									return !(i % (chartData.length/chartData.length))
+								}))
+				
+				// Set vertical guide					
+				var hGuide = d3.select("svg")
+								.append("g")
+									hAxis(hGuide)
+									hGuide.attr("transform", "translate("+margin.left+","+ (height + margin.top) +")")
+									hGuide.selectAll("path")
+										.style("fill", "none")
+										.style("stroke", "#000000")
+									hGuide.selectAll("line")
+										.style("stroke", "#000000")
+
+			})();
+
+		</script>
+
+	</body>
+</html>
